@@ -3,6 +3,8 @@ var API_PATH_TOKEN = "http://site.vintage-logistics.com:81/IMEXWEBREPSAPI/token"
 var API_PATH_FL = "http://site.vintage-logistics.com:81/IMEXWEBREPSAPI/api/FMS/GetDashboard";
 var isLoading = false;
 var shipments_array;
+var shipments_array_size;
+var lastPage = 1;
 
 //Encodes client request username and password from JSON to x-www-form-urlencoded
 function JSON_to_URLEncoded(element,key,list){
@@ -63,7 +65,7 @@ function getAccessToken(email, password) {
           access_token = data.access_token;
           setCookie("access_token", access_token, 7);
           simulateLogin();
-          stopLoadingAnimation();
+          //stopLoadingAnimation();
         },
         error: function(jqxhr, status, error) {
           simulateLogout();
@@ -95,10 +97,11 @@ function getFreightLoads(page) {
       processData: false,
       success: function(data) {
         shipments_array = data.Results;
+        shipments_array_size = data.Count;
         (data.Results[0] != null) ? setCookie("username", data.Results[0].Customer, 7) : "";
         var customer = !cookieExists("username") ? "My " : getCookie("username") + "'s "
         $("#heading").html(customer + " Shipments (total: " + data.Count + ")");
-        displayFreightLoads(shipments_array, page, data.Count);
+        setPage(page);
         stopLoadingAnimation();
       },
       error: function(jqxhr) {
@@ -119,6 +122,7 @@ function displayFreightLoads(freightLoads, page, totalLoads){
   $("tbody").html(rval);
   var totalPages = Math.ceil(totalLoads/PAGE_LIMIT);
   if (totalLoads > PAGE_LIMIT) generatePaginationNav(page, totalPages);
+  else generatePaginationNav(1, 1);
 }
 
 //Returns the content for one <tr> tag for one freight load.
@@ -157,14 +161,23 @@ function simulateLogout() {
 //Generates the pages navigation buttons if there is more than one page.
 function generatePaginationNav(current_page, pages) {
   var li_divs = "";
+
   if (current_page > 1) {
-    li_divs += ('<li class="page-item"><a class="page-link" onclick="getFreightLoads(' + (current_page - 1) + ')">Previous</a></li>');
+    li_divs += ('<li class="page-item"><a class="page-link" onclick="setPage(' + (current_page - 1) + ')">Previous</a></li>');
+  }
+  if (Math.max(1, current_page - 3) > 2) {
+    li_divs += ('<li class="page-item"><a class="page-link" onclick="setPage(' + 1 + ')">1</a></li>');
+    li_divs += ('<li class="page-item"><a class="page-link">..</a></li>');
   }
   for (let i = Math.max(1, current_page - 3); i < current_page + 4 && i <= pages; i++){
-    li_divs += ('<li class="page-item' + (i == current_page ? " active " : "") + '"><a class="page-link" onclick="getFreightLoads(' + i + ')">' + i + '</a></li>');
+    li_divs += ('<li class="page-item' + (i == current_page ? " active " : "") + '"><a class="page-link" onclick="setPage(' + i + ')">' + i + '</a></li>');
+  }
+  if (current_page + 3 < pages - 1) {
+    li_divs += ('<li class="page-item"><a class="page-link">..</a></li>');
+    li_divs += ('<li class="page-item"><a class="page-link" onclick="setPage(' + pages + ')">' + pages + '</a></li>');
   }
   if (current_page < pages) {
-    li_divs += ('<li class="page-item"><a class="page-link" onclick="getFreightLoads(' + (current_page + 1) + ')">Next</a></li>');
+    li_divs += ('<li class="page-item"><a class="page-link" onclick="setPage(' + (current_page + 1) + ')">Next</a></li>');
   }
   $(".pagination").html(li_divs);
 }
@@ -173,8 +186,10 @@ function generatePaginationNav(current_page, pages) {
 function trackOneVin(vinNumber) {
   if (getCookie("access_token") == null) return;
   setStatusText("Loading...", "text-primary");
+  displayStatus(vinNumber, shipments_array);
+  /*
   $.ajax({
-      url: (API_PATH_FL + "?fromDate=2018-07-08&toDate=2018-07-12"),
+      url: (API_PATH_FL + "?fromDate=2000-01-01&toDate=" + dateTodayStr()),
       dataType: 'json',
       type: 'get',
       contentType: 'application/x-www-form-urlencoded',
@@ -192,6 +207,7 @@ function trackOneVin(vinNumber) {
       }
     }
     );
+    */
 }
 
 //Sets the status text for the requested single vin.
@@ -204,11 +220,12 @@ function displayStatus(vinNumber, shipments){
       if (shipments[i].Status === "DELIVERED") textclass = "text-success"; 
       else textclass = "text-primary";
       setStatusText(shipments[i].Status, textclass);
+      $("#show_all_button").show();
       return;
     }
   }
   setStatusText("Not found", "text-danger");
-  getFreightLoads(1);
+  setPage(1);
 }
 
 //Helper function to set the status text for the requested single vin.
@@ -270,6 +287,12 @@ function getRowFieldsAsArray(row) {
     row.InvoiceNo, 
     row.Oid
     ];
+}
+
+
+function setPage(page) {
+  lastPage = page;
+  displayFreightLoads(shipments_array, page, shipments_array_size);
 }
 
 //convert to csv
