@@ -78,6 +78,15 @@ a:hover {
 .bg-mednavy {
   background-color: #152c4f; }
 
+.bg-stars {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../assets/stars.jpg");
+  background-position: center;
+  /* Center the image */
+  background-repeat: no-repeat;
+  /* Do not repeat the image */
+  background-size: cover;
+  /* Resize the background image to cover the entire container */ }
+
 .bg-darknavygradient {
   /* FF3.6-15 */
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0e1d34+8,0e1d34+100&1+43,0.57+94 */
@@ -107,7 +116,7 @@ a:hover {
 .bg-lightblue {
   background-color: #4d74a3; }
 
-bg-red {
+.bg-red {
   background-color: red; }
 
 .coin {
@@ -230,3 +239,6 @@ input.btn-danger[type="submit"]:focus {
 
 .bg-medgray {
   background: #222; }
+
+.text-shadow {
+  text-shadow: 2px 2px 5px black; }
