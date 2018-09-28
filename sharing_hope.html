@@ -35,7 +35,7 @@
     <div class="container">
       <div class="row navbar-nav opensans">
         <div class="d-lg-block d-md-none d-sm-none d-none nav-item">
-          <a class="nav-link" href="/">
+          <a class="" href="/">
             <img class="img-fluid" width="150px" src="/assets/logo_transparent_lite.png" />
           </a>
         </div>
@@ -43,19 +43,19 @@
           <a class="nav-link" href="/">HOME</a>
         </div>
         <div class="nav-item m-auto d-block">
-          <a class="nav-link" href="about.html">ABOUT US</a>
+          <a class="nav-link" href="/about.html">ABOUT US</a>
         </div>
         <div class="nav-item m-auto d-block">
-          <a class="nav-link" href="services.html">SERVICES</a>
+          <a class="nav-link" href="/services.html">SERVICES</a>
         </div>
         <div class="nav-item m-auto d-block">
-          <a class="nav-link" href="sharing_hope.html">SHARING HOPE</a>
+          <a class="nav-link" href="/sharing_hope.html">SHARING HOPE</a>
         </div>
         <div class="nav-item m-auto d-block">
-          <a class="nav-link" href="contact.html">CONTACT</a>
+          <a class="nav-link" href="/contact.html">CONTACT</a>
         </div>
         <div class="nav-item m-auto d-block bg-primarydark rounded-corners-10 hoverglow text-white" id="track_nav_div">
-          <a class="nav-link text-white" href="track.html">Track</a>
+          <a class="text-white p-3" href="/track.html">Track</a>
         </div>
       </div>
       
@@ -64,6 +64,15 @@
   
 </nav>
 
+<script type="text/javascript">
+  console.log(window.location.pathname);
+  $current_nav = $( "a[href='"+window.location.pathname+"'].nav-link" );
+  $current_nav.css({
+    "color":"white",
+    "font-weight":"bold",
+    "border-bottom":"3px solid white"
+  });
+</script>
     <div class="container bg-medgray text-white">
   <div class="row nanumgothic shadow">
     <div class="col-12 p-0">

@@ -242,3 +242,18 @@ input.btn-danger[type="submit"]:focus {
 
 .text-shadow {
   text-shadow: 2px 2px 5px black; }
+
+.glow {
+  -moz-box-shadow: 0px 0px 5px 2px #387ce2;
+  -webkit-box-shadow: 0px 0px 5px 2px #387ce2;
+  box-shadow: 0px 0px 5px 2px #387ce2; }
+
+.nav-link {
+  transition: all .2s ease-in-out; }
+
+.nav-link:hover {
+  /*border-bottom: 5px 3px #4b80d1;*/
+  transform: scale(1.1);
+  box-shadow: 0px 0px 4px 4px #4b80d1;
+  color: white;
+  font-weight: bold; }
