@@ -99,6 +99,9 @@ a:hover {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e1d34', endColorstr='#910e1d34',GradientType=0 );
   /* IE6-9 */ }
 
+.bg-darknavytrans {
+  background: rgba(21, 44, 79, 0.8); }
+
 .bg-darknavygradient2 {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0e1d34+0,0e1d34+92&0.57+6,1+57 */
   background: -moz-linear-gradient(top, rgba(14, 29, 52, 0.57) 0%, rgba(14, 29, 52, 0.57) 6%, #0e1d34 57%, #0e1d34 92%);
@@ -252,8 +255,12 @@ input.btn-danger[type="submit"]:focus {
   transition: all .2s ease-in-out; }
 
 .nav-link:hover {
-  /*border-bottom: 5px 3px #4b80d1;*/
-  transform: scale(1.1);
-  box-shadow: 0px 0px 4px 4px #4b80d1;
   color: white;
-  font-weight: bold; }
+  font-weight: bold;
+  border-bottom: 3px solid white; }
+
+.grow {
+  transition: all .2s ease-in-out; }
+
+.grow:hover {
+  transform: scale(1.1); }
